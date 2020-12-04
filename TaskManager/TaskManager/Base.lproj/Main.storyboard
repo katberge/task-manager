@@ -33,6 +33,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="DP6-tn-6em" kind="show" identifier="TaskSegue" id="ICk-s1-roj"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -102,10 +105,11 @@
                         <viewLayoutGuide key="safeArea" id="REy-7l-sYB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="BnL-ha-FaV"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2S-Ej-wSM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1505.7971014492755" y="28.794642857142854"/>
+            <point key="canvasLocation" x="1674" y="27"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kPW-Hc-PPo">

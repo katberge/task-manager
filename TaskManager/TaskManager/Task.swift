@@ -29,7 +29,7 @@ class TaskManager {
                 if sqlite3_exec(database, "CREATE TABLE IF NOT EXIST tasks (title TEXT)", nil, nil, nil) != SQLITE_OK {
                     print("Error creating tasks table")
                 }
-                if sqlite3_exec(database, "CREATE TABLE IF NOT EXIST steps (task_id INT, contents TEXT, completed INT)", nil, nil, nil) != SQLITE_OK {
+                if sqlite3_exec(database, "CREATE TABLE IF NOT EXIST steps (taskid INT, contents TEXT, completed INT)", nil, nil, nil) != SQLITE_OK {
                     print("Error creating tasks table")
                 }
             }

@@ -20,7 +20,7 @@ class TaskListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
-        cell.textLabel?.text = tasks[indexPath.row].content
+        cell.textLabel?.text = tasks[indexPath.row].title
         return cell
     }
 
