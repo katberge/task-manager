@@ -43,7 +43,13 @@
                             <outlet property="delegate" destination="lNE-QW-ZmF" id="StM-Ru-B5S"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="CgI-o3-vVr"/>
+                    <navigationItem key="navigationItem" id="CgI-o3-vVr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yZf-2E-uGP">
+                            <connections>
+                                <action selector="createTask" destination="lNE-QW-ZmF" id="X3X-Vy-6BJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zga-pz-FEY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

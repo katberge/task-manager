@@ -9,6 +9,11 @@ import UIKit
 
 class TaskListViewController: UITableViewController {
     var tasks: [Task] = []
+    
+    @IBAction func createTask() {
+        TaskManager.main.createNew()
+        reload()
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -22,6 +27,11 @@ class TaskListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
         cell.textLabel?.text = tasks[indexPath.row].title
         return cell
+    }
+    
+    func reload() {
+        tasks = TaskManager.main.getAllTasks()
+        self.tableView.reloadData()
     }
 
 }
