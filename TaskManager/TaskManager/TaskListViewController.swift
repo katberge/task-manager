@@ -29,6 +29,14 @@ class TaskListViewController: UITableViewController {
         return cell
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TaskSegue" {
+            if let destination = segue.destination as? TaskViewController {
+                destination.task = tasks[tableView.indexPathForSelectedRow!.row]
+            }
+        }
+    }
+    
     func reload() {
         tasks = TaskManager.main.getAllTasks()
         self.tableView.reloadData()
