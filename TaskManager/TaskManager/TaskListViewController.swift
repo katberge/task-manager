@@ -45,5 +45,17 @@ class TaskListViewController: UITableViewController {
         tasks = TaskManager.main.getAllTasks()
         self.tableView.reloadData()
     }
+    
+    // allow note to be deleted from a swipe action
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .normal, title: "Delete", handler: {_,_,_ in
+            TaskManager.main.deleteTask(task: self.tasks[indexPath.row])
+            self.reload()
+        })
+        
+        delete.backgroundColor = .systemRed
+        
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
 
 }

@@ -84,4 +84,20 @@ class TaskManager {
         
         return result
     }
+    
+    func deleteTask(task: Task) {
+        setUpDatabase()
+        
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare(database, "DELETE FROM tasks WHERE rowid = ?", -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_int(statement, 1, Int32(task.id))
+            if sqlite3_step(statement) != SQLITE_DONE {
+                print("Error deleting task")
+            }
+        }
+        else {
+            print("Error creating delete statement")
+        }
+    }
 }
