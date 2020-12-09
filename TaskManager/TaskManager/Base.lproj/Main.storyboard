@@ -55,10 +55,10 @@
             </objects>
             <point key="canvasLocation" x="755.07246376811599" y="26.785714285714285"/>
         </scene>
-        <!--View Controller-->
+        <!--Task View Controller-->
         <scene sceneID="Nf7-Ko-lZr">
             <objects>
-                <viewController id="DP6-tn-6em" sceneMemberID="viewController">
+                <viewController id="DP6-tn-6em" customClass="TaskViewController" customModule="TaskManager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SFr-Bp-eqj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -116,6 +116,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="BnL-ha-FaV"/>
+                    <connections>
+                        <outlet property="titleLabel" destination="kxe-8f-XNT" id="2na-bz-xiD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2S-Ej-wSM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
