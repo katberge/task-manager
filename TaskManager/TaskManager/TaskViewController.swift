@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskViewController: UIViewController {
+class TaskViewController: UITableViewController {
     var task: Task
     
 }
