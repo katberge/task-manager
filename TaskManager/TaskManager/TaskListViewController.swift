@@ -16,6 +16,7 @@ class TaskListViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         reload()
     }
 
