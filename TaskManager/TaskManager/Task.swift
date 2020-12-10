@@ -99,5 +99,7 @@ class TaskManager {
         else {
             print("Error creating delete statement")
         }
+        
+        sqlite3_finalize(statement)
     }
 }
