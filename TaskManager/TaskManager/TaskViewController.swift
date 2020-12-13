@@ -11,7 +11,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var task: Task!
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var titleTextView: UITextView!
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,14 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.delegate = self
         tableView.dataSource = self
         
-        titleLabel.text = task.title
+        titleTextView.text = task.title
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        task.title = titleTextView.text
+        TaskManager.main.saveTaskTitle(task: task)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

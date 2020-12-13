@@ -100,13 +100,14 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Finish Homework" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kxe-8f-XNT">
-                                <rect key="frame" x="20" y="88" width="374" height="170"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Finish Homework" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5Qc-m3-IiM">
+                                <rect key="frame" x="20" y="108" width="374" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="REy-7l-sYB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -114,7 +115,7 @@
                     <navigationItem key="navigationItem" id="BnL-ha-FaV"/>
                     <connections>
                         <outlet property="tableView" destination="sEa-lT-Zi2" id="3Zu-jZ-OgB"/>
-                        <outlet property="titleLabel" destination="kxe-8f-XNT" id="2na-bz-xiD"/>
+                        <outlet property="titleTextView" destination="5Qc-m3-IiM" id="mfr-3U-9rj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2S-Ej-wSM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -141,6 +142,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -10,12 +10,12 @@ import SQLite3
 
 struct Task {
     let id: Int
-    let title: String
-    let steps: [Step]
+    var title: String
+    var steps: [Step]
 }
 
 struct Step {
-    let contents: String
+    var contents: String
     var completed: Int
 }
 
@@ -83,6 +83,26 @@ class TaskManager {
         sqlite3_finalize(statement)
         
         return result
+    }
+    
+    func saveTaskTitle(task: Task) {
+        setUpDatabase()
+        
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare(database, "UPDATE tasks SET title = ? WHERE rowid = ?", -1, &statement, nil) != SQLITE_OK {
+            print("Error creating save task statement")
+            
+        }
+        
+        sqlite3_bind_text(statement, 1, NSString(string: task.title).utf8String, -1, nil)
+        sqlite3_bind_int(statement, 2, Int32(task.id))
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            print("Error saving task")
+        }
+        
+        sqlite3_finalize(statement)
     }
     
     func deleteTask(task: Task) {
