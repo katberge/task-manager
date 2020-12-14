@@ -78,17 +78,13 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNA-ig-G0s">
-                                            <rect key="frame" x="309" y="5" width="33" height="34"/>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNA-ig-G0s">
+                                            <rect key="frame" x="370" y="11" width="18" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <state key="normal" title="Add"/>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y31-2P-RXt">
-                                            <rect key="frame" x="363" y="5" width="31" height="34"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <state key="normal" title="Edit"/>
+                                            <state key="normal" image="plus" catalog="system"/>
+                                            <connections>
+                                                <segue destination="kja-aq-Z91" kind="show" identifier="StepEditSegue" id="Ev5-Od-Rsw"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" systemColor="systemGray5Color"/>
@@ -148,6 +144,32 @@
             </objects>
             <point key="canvasLocation" x="1644.9275362318842" y="26.785714285714285"/>
         </scene>
+        <!--Edit Step-->
+        <scene sceneID="d4A-wD-NhG">
+            <objects>
+                <viewController id="kja-aq-Z91" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BMZ-0h-xJS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Current Step" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="I4d-ES-cg1">
+                                <rect key="frame" x="20" y="88" width="374" height="774"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mmK-Ku-0S3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Step" id="pay-3a-xJY"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kgS-FB-aIU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2540.579710144928" y="26.785714285714285"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="kPW-Hc-PPo">
             <objects>
@@ -168,6 +190,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

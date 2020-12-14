@@ -56,12 +56,25 @@ class TaskManager {
         setUpDatabase()
         
         var statement: OpaquePointer?
+        var stepStatement: OpaquePointer?
         
         if sqlite3_prepare(database, "INSERT INTO tasks (title) VALUES ('New Task')", -1, &statement, nil) != SQLITE_OK {
             print("Error creating task query")
         }
         else if sqlite3_step(statement) != SQLITE_DONE {
             print("Error making new task")
+        }
+        
+        // set up one initial step
+        if sqlite3_prepare(database, "INSERT INTO steps (taskid, contents, completed) VALUES (?, 'New Step', 0)", -1, &stepStatement, nil) == SQLITE_OK {
+            sqlite3_bind_int(stepStatement, 1, Int32(sqlite3_last_insert_rowid(database)))
+        }
+        else {
+            print("Error creating step query")
+        }
+        
+        if sqlite3_step(stepStatement) != SQLITE_DONE {
+            print("Error making new step")
         }
     }
     
@@ -77,7 +90,26 @@ class TaskManager {
         }
         
         while sqlite3_step(statement) == SQLITE_ROW {
-            result.append(Task(id: Int(sqlite3_column_int(statement, 0)), title: String(cString: sqlite3_column_text(statement, 1)), steps: [Step(contents: "New step", completed: 0)]))
+            let currRowID = Int(sqlite3_column_int(statement, 0))
+            var stepResults: [Step] = []
+            var stepStatement: OpaquePointer?
+            
+            // get steps to current task
+            if sqlite3_prepare(database, "SELECT contents, completed FROM steps WHERE taskid = ?", -1, &stepStatement, nil) != SQLITE_OK {
+                print("Error creating select query")
+                return []
+            }
+            sqlite3_bind_int(stepStatement, 1, Int32(currRowID))
+            while sqlite3_step(stepStatement) == SQLITE_ROW {
+                stepResults.append(Step(contents: String(cString: sqlite3_column_text(stepStatement, 0)), completed: Int(sqlite3_column_int(stepStatement, 1))))
+            }
+            sqlite3_finalize(stepStatement)
+            
+            result.append(
+                Task(id: currRowID,
+                     title: String(cString: sqlite3_column_text(statement, 1)),
+                     steps: stepResults)
+            )
         }
         
         sqlite3_finalize(statement)
@@ -109,9 +141,11 @@ class TaskManager {
         setUpDatabase()
         
         var statement: OpaquePointer?
+        var stepStatement: OpaquePointer?
+        let taskID = Int32(task.id)
         
         if sqlite3_prepare(database, "DELETE FROM tasks WHERE rowid = ?", -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_int(statement, 1, Int32(task.id))
+            sqlite3_bind_int(statement, 1, taskID)
             if sqlite3_step(statement) != SQLITE_DONE {
                 print("Error deleting task")
             }
@@ -119,7 +153,42 @@ class TaskManager {
         else {
             print("Error creating delete statement")
         }
-        
         sqlite3_finalize(statement)
+        
+        if sqlite3_prepare(database, "DELETE FROM steps WHERE taskid = ?", -1, &stepStatement, nil) == SQLITE_OK {
+            sqlite3_bind_int(stepStatement, 1, taskID)
+            if sqlite3_step(stepStatement) != SQLITE_DONE {
+                print("Error deleting steps")
+            }
+        }
+        else {
+            print("Error creating delete step statement")
+        }
+        sqlite3_finalize(stepStatement)
+    }
+    
+    func addStep(task: Task) {
+        setUpDatabase()
+        
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare(database, "INSERT INTO steps (taskid, contents, completed) VALUES (?, 'New Step', 0)", -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_int(statement, 1, Int32(task.id))
+        }
+        else {
+            print("Error creating new step query")
+        }
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            print("Error making new step")
+        }
+    }
+    
+    func saveStep(step: Step) {
+        
+    }
+    
+    func deleteStep(step: Step) {
+        
     }
 }

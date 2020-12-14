@@ -38,4 +38,20 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.textLabel?.text = task.steps[indexPath.row].contents
         return cell
     }
+    
+    // adds edit and delete as swipe actions
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let edit = UIContextualAction(style: .normal, title: "Edit", handler: {_,_,_ in
+            // move to edit screen
+        })
+        
+        let delete = UIContextualAction(style: .normal, title: "Delete", handler: {_,_,_ in
+            // TaskManager.main.deleteStep(task: self.task.steps[indexPath.row])
+        })
+        
+        edit.backgroundColor = .systemGreen
+        delete.backgroundColor = .systemRed
+        
+        return UISwipeActionsConfiguration(actions: [edit, delete])
+    }
 }
