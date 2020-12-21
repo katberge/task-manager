@@ -14,6 +14,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var titleTextView: UITextView!
     @IBOutlet var blurView: UIVisualEffectView!
     @IBOutlet var stepPopUpView: UIView!
+    @IBOutlet var stepTextView: UITextView!
     
     @IBAction func showStepView(_ sender: Any) {
         animateIn(view: blurView)
@@ -22,6 +23,8 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBAction func stepViewDone(_ sender: Any) {
         // save input and show on screen
+        TaskManager.main.addStep(taskID: task.id, contents: stepTextView.text)
+        reload()
         
         animateOut(view: stepPopUpView)
         animateOut(view: blurView)
@@ -76,6 +79,11 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         delete.backgroundColor = .systemRed
         
         return UISwipeActionsConfiguration(actions: [edit, delete])
+    }
+    
+    func reload() {
+        //task = TaskManager.main.getTask()
+        //self.tableView.reloadData()
     }
     
     // animate in and out functions for a UIView

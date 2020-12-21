@@ -138,6 +138,7 @@
                     <connections>
                         <outlet property="blurView" destination="JvA-ZW-gdi" id="8lk-LF-WLa"/>
                         <outlet property="stepPopUpView" destination="7JX-Pm-hYU" id="qMA-kg-kPe"/>
+                        <outlet property="stepTextView" destination="9r9-Eq-1je" id="7V8-Uy-bl7"/>
                         <outlet property="tableView" destination="sEa-lT-Zi2" id="3Zu-jZ-OgB"/>
                         <outlet property="titleTextView" destination="5Qc-m3-IiM" id="mfr-3U-9rj"/>
                     </connections>

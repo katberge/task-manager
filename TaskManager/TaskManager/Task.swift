@@ -167,13 +167,25 @@ class TaskManager {
         sqlite3_finalize(stepStatement)
     }
     
-    func addStep(task: Task) {
+    func getTask() -> Task {
+        return Task(id: 0, title: "TODO", steps: [])
+    }
+    
+    func addStep(taskID: Int, contents: String) {
         setUpDatabase()
         
         var statement: OpaquePointer?
         
-        if sqlite3_prepare(database, "INSERT INTO steps (taskid, contents, completed) VALUES (?, 'New Step', 0)", -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_int(statement, 1, Int32(task.id))
+        if sqlite3_prepare(database, "INSERT INTO steps (taskid, contents, completed) VALUES (?, ?, 0)", -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_int(statement, 1, Int32(taskID))
+            
+            // if provided contents is an empty string, set contents to "New Step"
+            if contents == "" {
+                sqlite3_bind_text(statement, 2, "New Step", -1, nil)
+            }
+            else {
+                sqlite3_bind_text(statement, 2, NSString(string: contents).utf8String, -1, nil)
+            }
         }
         else {
             print("Error creating new step query")
@@ -184,8 +196,23 @@ class TaskManager {
         }
     }
     
-    func saveStep(step: Step) {
+    func saveStep(taskID: Int, step: Step) {
+        setUpDatabase()
         
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare(database, "UPDATE steps SET contents = ? WHERE taskid = ?", -1, &statement, nil) != SQLITE_OK {
+            print("Error creating save step statement")
+        }
+        
+        sqlite3_bind_text(statement, 1, NSString(string: step.contents).utf8String, -1, nil)
+        sqlite3_bind_int(statement, 2, Int32(taskID))
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            print("Error saving step")
+        }
+        
+        sqlite3_finalize(statement)
     }
     
     func deleteStep(step: Step) {
