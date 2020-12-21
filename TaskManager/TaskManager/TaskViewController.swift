@@ -40,6 +40,9 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         // sets popup view width and height to percentages of the screen's size
         stepPopUpView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width * 0.85, height: self.view.bounds.height * 0.5)
+        // round edges of popup window
+        stepPopUpView.clipsToBounds = true
+        stepPopUpView.layer.cornerRadius = 5
     }
     
     override func viewDidDisappear(_ animated: Bool) {
