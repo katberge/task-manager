@@ -17,6 +17,9 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var stepTextView: UITextView!
     
     @IBAction func showStepView(_ sender: Any) {
+        // clear previous entry (if it was there) and add starting text of "Your new step..."
+        stepTextView.text = "Your new step..."
+        
         animateIn(view: blurView)
         animateIn(view: stepPopUpView)
     }
