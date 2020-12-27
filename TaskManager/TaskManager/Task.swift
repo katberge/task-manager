@@ -222,6 +222,7 @@ class TaskManager {
         
         if sqlite3_prepare(database, "UPDATE steps SET contents = ? WHERE taskid = ?", -1, &statement, nil) != SQLITE_OK {
             print("Error creating save step statement")
+            return
         }
         
         sqlite3_bind_text(statement, 1, NSString(string: step.contents).utf8String, -1, nil)
@@ -229,12 +230,31 @@ class TaskManager {
         
         if sqlite3_step(statement) != SQLITE_DONE {
             print("Error saving step")
+            return
         }
         
         sqlite3_finalize(statement)
     }
     
-    func deleteStep(step: Step) {
+    func deleteStep(taskID: Int, step: Step) {
+        setUpDatabase()
         
+        var statement: OpaquePointer?
+        
+        // need to create test so no two steps of the same task have same contents (or add id to steps)
+        if sqlite3_prepare(database, "DELETE FROM steps WHERE taskid = ? AND contents = ?", -1, &statement, nil) != SQLITE_OK {
+            print("Error creating delete step statement")
+            return
+        }
+        
+        sqlite3_bind_int(statement, 1, Int32(taskID))
+        sqlite3_bind_text(statement, 2, NSString(string: step.contents).utf8String, -1, nil)
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            print("Error deleting step")
+            return
+        }
+        
+        sqlite3_finalize(statement)
     }
 }

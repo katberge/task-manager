@@ -72,13 +72,14 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
         let delete = UIContextualAction(style: .normal, title: "Delete", handler: {_,_,_ in
-            // TaskManager.main.deleteStep(task: self.task.steps[indexPath.row])
+            TaskManager.main.deleteStep(taskID: self.task.id, step: self.task.steps[indexPath.row])
+            self.reload()
         })
         
         edit.backgroundColor = .systemGreen
         delete.backgroundColor = .systemRed
         
-        return UISwipeActionsConfiguration(actions: [edit, delete])
+        return UISwipeActionsConfiguration(actions: [delete, edit])
     }
     
     func reload() {
