@@ -42,7 +42,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         blurView.bounds = self.view.bounds
         
         // sets popup view width and height to percentages of the screen's size
-        stepPopUpView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width * 0.85, height: self.view.bounds.height * 0.5)
+        stepPopUpView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width * 0.85, height: self.view.bounds.height * 0.4)
         // round edges of popup window
         stepPopUpView.clipsToBounds = true
         stepPopUpView.layer.cornerRadius = 5
@@ -82,8 +82,8 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func reload() {
-        //task = TaskManager.main.getTask()
-        //self.tableView.reloadData()
+        task.steps = TaskManager.main.getSteps(taskID: task.id)
+        self.tableView.reloadData()
     }
     
     // animate in and out functions for a UIView

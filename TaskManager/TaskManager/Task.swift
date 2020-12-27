@@ -167,8 +167,27 @@ class TaskManager {
         sqlite3_finalize(stepStatement)
     }
     
-    func getTask() -> Task {
-        return Task(id: 0, title: "TODO", steps: [])
+    func getSteps(taskID: Int) -> [Step] {
+        setUpDatabase()
+        
+        var statement: OpaquePointer?
+        var result: [Step] = []
+        
+        if sqlite3_prepare(database, "SELECT contents, completed FROM steps WHERE taskid = ?", -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_int(statement, 1, Int32(taskID))
+        }
+        else {
+            print("Error creating select query")
+            return result
+        }
+        
+        while sqlite3_step(statement) == SQLITE_ROW {
+            result.append(Step(contents: String(cString: sqlite3_column_text(statement, 0)), completed: Int(sqlite3_column_int(statement, 1))))
+        }
+        
+        sqlite3_finalize(statement)
+        
+        return result
     }
     
     func addStep(taskID: Int, contents: String) {
