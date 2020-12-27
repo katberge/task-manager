@@ -81,6 +81,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "StepCell", for: indexPath)
         cell.textLabel?.text = task.steps[indexPath.row].contents
+        
+        // if completed is 0 (false) set image to empty circle
+        if task.steps[indexPath.row].completed == 0 {
+            cell.imageView?.image = UIImage(named: "circle")
+        }
+        // else set to filled checkmark circle
+        else {
+            cell.imageView?.image = UIImage(named: "checkmark.circle.fill")
+        }
+        
         return cell
     }
     
