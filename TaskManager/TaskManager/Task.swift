@@ -256,4 +256,32 @@ class TaskManager {
         
         sqlite3_finalize(statement)
     }
+    
+    func toggleCompleted(step: Step) {
+        setUpDatabase()
+        
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare(database, "UPDATE steps SET completed = ? WHERE rowid = ?", -1, &statement, nil) != SQLITE_OK {
+            print("Error creating save step statement")
+            return
+        }
+        
+        // 0 = false, 1 = true
+        if step.completed == 0 {
+            sqlite3_bind_int(statement, 1, 1)
+        }
+        else {
+            sqlite3_bind_int(statement, 1, 0)
+        }
+        
+        sqlite3_bind_int(statement, 2, Int32(step.id))
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            print("Error saving step")
+            return
+        }
+        
+        sqlite3_finalize(statement)
+    }
 }
