@@ -41,7 +41,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         else {
             // identify current step and update its contents
             currStep!.contents = stepTextView.text
-            TaskManager.main.saveStep(taskID: task.id, step: currStep!)
+            TaskManager.main.saveStep(step: currStep!)
             reload()
         }
         
@@ -99,7 +99,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
         let delete = UIContextualAction(style: .normal, title: "Delete", handler: {_,_,_ in
-            TaskManager.main.deleteStep(taskID: self.task.id, step: self.task.steps[indexPath.row])
+            TaskManager.main.deleteStep(step: self.task.steps[indexPath.row])
             self.reload()
         })
         

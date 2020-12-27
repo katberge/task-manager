@@ -15,6 +15,7 @@ struct Task {
 }
 
 struct Step {
+    var id: Int
     var contents: String
     var completed: Int
 }
@@ -95,13 +96,13 @@ class TaskManager {
             var stepStatement: OpaquePointer?
             
             // get steps to current task
-            if sqlite3_prepare(database, "SELECT contents, completed FROM steps WHERE taskid = ?", -1, &stepStatement, nil) != SQLITE_OK {
+            if sqlite3_prepare(database, "SELECT rowid, contents, completed FROM steps WHERE taskid = ?", -1, &stepStatement, nil) != SQLITE_OK {
                 print("Error creating select query")
                 return []
             }
             sqlite3_bind_int(stepStatement, 1, Int32(currRowID))
             while sqlite3_step(stepStatement) == SQLITE_ROW {
-                stepResults.append(Step(contents: String(cString: sqlite3_column_text(stepStatement, 0)), completed: Int(sqlite3_column_int(stepStatement, 1))))
+                stepResults.append(Step(id: Int(sqlite3_column_int(stepStatement, 0)), contents: String(cString: sqlite3_column_text(stepStatement, 1)), completed: Int(sqlite3_column_int(stepStatement, 2))))
             }
             sqlite3_finalize(stepStatement)
             
@@ -173,7 +174,7 @@ class TaskManager {
         var statement: OpaquePointer?
         var result: [Step] = []
         
-        if sqlite3_prepare(database, "SELECT contents, completed FROM steps WHERE taskid = ?", -1, &statement, nil) == SQLITE_OK {
+        if sqlite3_prepare(database, "SELECT rowid, contents, completed FROM steps WHERE taskid = ?", -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_int(statement, 1, Int32(taskID))
         }
         else {
@@ -182,7 +183,7 @@ class TaskManager {
         }
         
         while sqlite3_step(statement) == SQLITE_ROW {
-            result.append(Step(contents: String(cString: sqlite3_column_text(statement, 0)), completed: Int(sqlite3_column_int(statement, 1))))
+            result.append(Step(id: Int(sqlite3_column_int(statement, 0)), contents: String(cString: sqlite3_column_text(statement, 1)), completed: Int(sqlite3_column_int(statement, 2))))
         }
         
         sqlite3_finalize(statement)
@@ -215,18 +216,18 @@ class TaskManager {
         }
     }
     
-    func saveStep(taskID: Int, step: Step) {
+    func saveStep(step: Step) {
         setUpDatabase()
         
         var statement: OpaquePointer?
         
-        if sqlite3_prepare(database, "UPDATE steps SET contents = ? WHERE taskid = ?", -1, &statement, nil) != SQLITE_OK {
+        if sqlite3_prepare(database, "UPDATE steps SET contents = ? WHERE rowid = ?", -1, &statement, nil) != SQLITE_OK {
             print("Error creating save step statement")
             return
         }
         
         sqlite3_bind_text(statement, 1, NSString(string: step.contents).utf8String, -1, nil)
-        sqlite3_bind_int(statement, 2, Int32(taskID))
+        sqlite3_bind_int(statement, 2, Int32(step.id))
         
         if sqlite3_step(statement) != SQLITE_DONE {
             print("Error saving step")
@@ -236,19 +237,17 @@ class TaskManager {
         sqlite3_finalize(statement)
     }
     
-    func deleteStep(taskID: Int, step: Step) {
+    func deleteStep(step: Step) {
         setUpDatabase()
         
         var statement: OpaquePointer?
         
-        // need to create test so no two steps of the same task have same contents (or add id to steps)
-        if sqlite3_prepare(database, "DELETE FROM steps WHERE taskid = ? AND contents = ?", -1, &statement, nil) != SQLITE_OK {
+        if sqlite3_prepare(database, "DELETE FROM steps WHERE rowid = ?", -1, &statement, nil) != SQLITE_OK {
             print("Error creating delete step statement")
             return
         }
         
-        sqlite3_bind_int(statement, 1, Int32(taskID))
-        sqlite3_bind_text(statement, 2, NSString(string: step.contents).utf8String, -1, nil)
+        sqlite3_bind_int(statement, 1, Int32(step.id))
         
         if sqlite3_step(statement) != SQLITE_DONE {
             print("Error deleting step")
