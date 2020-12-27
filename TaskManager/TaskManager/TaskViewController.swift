@@ -10,13 +10,20 @@ import UIKit
 class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var task: Task!
     
+    // variable for editing step contents
+    var currStep: Step?
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var titleTextView: UITextView!
     @IBOutlet var blurView: UIVisualEffectView!
     @IBOutlet var stepPopUpView: UIView!
+    @IBOutlet var stepPopUpTitle: UILabel!
     @IBOutlet var stepTextView: UITextView!
     
     @IBAction func showStepView(_ sender: Any) {
+        // set title to show user is creating a new step
+        stepPopUpTitle.text = "New Step"
+        
         // clear previous entry (if it was there) and add starting text of "Your new step..."
         stepTextView.text = "Your new step..."
         
@@ -25,9 +32,18 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     @IBAction func stepViewDone(_ sender: Any) {
-        // save input and show on screen
-        TaskManager.main.addStep(taskID: task.id, contents: stepTextView.text)
-        reload()
+        // if stepPopUpTitle says new step, add step
+        if stepPopUpTitle.text == "New Step" {
+            TaskManager.main.addStep(taskID: task.id, contents: stepTextView.text)
+            reload()
+        }
+        // else stepPopUp is in edit mode
+        else {
+            // identify current step and update its contents
+            currStep!.contents = stepTextView.text
+            TaskManager.main.saveStep(taskID: task.id, step: currStep!)
+            reload()
+        }
         
         animateOut(view: stepPopUpView)
         animateOut(view: blurView)
@@ -71,7 +87,15 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // adds edit and delete as swipe actions
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let edit = UIContextualAction(style: .normal, title: "Edit", handler: {_,_,_ in
-            // move to edit popup
+            // set title to show user is editing an existing step
+            self.stepPopUpTitle.text = "Edit Step"
+            
+            // set text view text to current steps contents
+            self.currStep = self.task.steps[indexPath.row]
+            self.stepTextView.text = self.task.steps[indexPath.row].contents
+            
+            self.animateIn(view: self.blurView)
+            self.animateIn(view: self.stepPopUpView)
         })
         
         let delete = UIContextualAction(style: .normal, title: "Delete", handler: {_,_,_ in
